@@ -11,7 +11,7 @@ import mimetypes  # ✅ Render fix: Python 3.13 me imghdr hata diya gaya, ye saf
 # ----------------------------
 # CONFIG
 # ----------------------------
-BOT_TOKEN = os.getenv("BOT_TOKEN")  # ✅ Token env var se lo (Render me ENV se set karna)
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8093787434:AAHOhybQgLcPAghmZd0MgsrraYBcVRZBymU")  # ✅ Token env var se lo (Render me ENV se set karna)
 ALLOWED_USER_ID = None
 VENUES = [1, 2, 4, 5, 6, 8]
 DAYS_AHEAD = 5
@@ -158,3 +158,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 
