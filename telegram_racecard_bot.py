@@ -6,16 +6,18 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from telegram import InputFile, Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
-import mimetypes  # ✅ Render fix: Python 3.13 me imghdr hata diya gaya, ye safe alternative hai
+import mimetypes  # ✅ Python 3.13 me imghdr hata gaya — ye safe hai
 
 # ----------------------------
 # CONFIG
 # ----------------------------
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8093787434:AAHOhybQgLcPAghmZd0MgsrraYBcVRZBymU")  # ✅ Token env var se lo (Render me ENV se set karna)
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8093787434:AAHOhybQgLcPAghmZd0MgsrraYBcVRZBymU")
 ALLOWED_USER_ID = None
 VENUES = [1, 2, 4, 5, 6, 8]
 DAYS_AHEAD = 5
 OUTPUT_DIR = "racecards"
+PORT = int(os.environ.get("PORT", 8443))
+HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "localhost")
 
 # ----------------------------
 # HELPERS / SCRAPER
@@ -144,18 +146,27 @@ def fetch(update: Update, context: CallbackContext):
     update.message.reply_text("✅ All files sent.")
 
 # ----------------------------
-# MAIN
+# MAIN (WEBHOOK MODE)
 # ----------------------------
 def main():
-    print("🚀 Starting Telegram bot on Render...")
+    print("🚀 Starting Telegram bot on Render (Webhook mode)...")
     updater = Updater(BOT_TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("fetch", fetch))
-    print("🤖 Bot is polling...")
-    updater.start_polling()
+
+    webhook_url = f"https://{HOSTNAME}/{BOT_TOKEN}"
+    print(f"🌐 Setting webhook to: {webhook_url}")
+
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=BOT_TOKEN,
+        webhook_url=webhook_url,
+    )
+
+    print("🤖 Bot is live and listening via Webhook!")
     updater.idle()
 
 if __name__ == "__main__":
     main()
- 
