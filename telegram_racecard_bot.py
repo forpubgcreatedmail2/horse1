@@ -13,7 +13,7 @@ import mimetypes  # ✅ Python 3.13 me imghdr hata gaya — ye safe hai
 # ----------------------------
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8093787434:AAHOhybQgLcPAghmZd0MgsrraYBcVRZBymU")
 ALLOWED_USER_ID = None
-VENUES = [1, 2, 4, 5, 6, 8]
+VENUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 DAYS_AHEAD = 5
 OUTPUT_DIR = "racecards"
 PORT = int(os.environ.get("PORT", 8443))
@@ -170,3 +170,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
